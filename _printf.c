@@ -25,7 +25,7 @@ int _printf(const char *format, ...)
 			switch(format[i+1])
 			{
 			case 'c':
-				putchar(va_arg(arg, int));
+				_putchar(va_arg(arg, int));
 				i++;
 				break;
 			case 'd':
@@ -44,7 +44,7 @@ int _printf(const char *format, ...)
 				}
 				for (j = dvar_length-1; j>=0; j--)
 				{
-					putchar(dvar_digits[j]+'0');
+					_putchar(dvar_digits[j]+'0');
 					length++;
 				}
 				free(dvar_digits);
@@ -55,24 +55,24 @@ int _printf(const char *format, ...)
 
 				for (j = 0; format_str[j]; j++)
 				{
-					putchar(format_str[j]);
+					_putchar(format_str[j]);
 					length++;
 				}
 				i++;
 				break;
 			case '%':
-				putchar('%');
+				_putchar('%');
 				length++;
 				i++;
 				break;
 			default:
-				putchar(format[i]);
+				_putchar(format[i]);
 				length = length + 1;
 			}	
 		}
 		else
 		{
-			putchar(format[i]);
+			_putchar(format[i]);
 			length++;
 		}
 	}
