@@ -34,7 +34,7 @@ int _printf(const char *format, ...)
 				if(d_var<0){
 					_putchar('-');
 					length++;
-					d_var = -dvar;
+					d_var = -d_var;
 				}
 				dvar_temp = d_var;
 				while(dvar_temp){
