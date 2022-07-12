@@ -56,6 +56,33 @@ int _printf(const char *format, ...)
 				free(dvar_digits);
 				i++;
 				break;
+			case 'i':
+				d_var = va_arg(arg, int);
+				if(d_var<0){
+					_putchar('-');
+					length++;
+					d_var = -d_var;
+				}
+				dvar_temp = d_var;
+				while(dvar_temp){
+					dvar_length++;
+					dvar_temp/=10;
+				}
+				dvar_digits = malloc(dvar_length);
+				j = 0;
+				while(d_var){
+					dvar_digits[j] = d_var%10;
+					j++;
+					d_var/=10;
+				}
+				for (j = dvar_length-1; j>=0; j--)
+				{
+					_putchar(dvar_digits[j]+'0');
+					length++;
+				}
+				free(dvar_digits);
+				i++;
+				break;
 			case 's':
 				format_str = va_arg(arg, char*);
 
