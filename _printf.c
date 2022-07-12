@@ -27,6 +27,7 @@ int _printf(const char *format, ...)
 			case 'c':
 				_putchar(va_arg(arg, int));
 				i++;
+				length++;
 				break;
 			case 'd':
 				d_var = va_arg(arg, int);
