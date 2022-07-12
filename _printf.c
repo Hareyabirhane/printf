@@ -31,6 +31,11 @@ int _printf(const char *format, ...)
 				break;
 			case 'd':
 				d_var = va_arg(arg, int);
+				if(d_var<0){
+					_putchar('-');
+					length++;
+					d_var = -dvar;
+				}
 				dvar_temp = d_var;
 				while(dvar_temp){
 					dvar_length++;
