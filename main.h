@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 
+
 /**
  * struct format - match the conversion specifiers for printf
  * @id: type char pointer of the specifier i.e (l, h) for (d, i, u, o, x, X)
@@ -25,7 +26,7 @@ int printf_pointer(va_list val);
 int printf_hex_aux(unsigned long int num);
 int printf_HEX_aux(unsigned int num);
 int printf_exclusive_string(va_list val);
-int HEX(va_list val);
+int printf_HEX(va_list val);
 int printf_hex(va_list val);
 int printf_oct(va_list val);
 int printf_unsigned(va_list args);
