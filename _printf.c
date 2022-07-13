@@ -1,78 +1,121 @@
-#include <stdarg.h>
-#include <unistd.h>
 #include "main.h"
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
 /**
-  * find_function - function that finds formats for _printf
-  * calls the corresponding function.
-  * @format: format (char, string, int, decimal)
-  * Return: NULL or function associated ;
-  */
-int (*find_function(const char *format))(va_list)
-{
-	unsigned int i = 0;
-	code_f find_f[] = {
-		{"c", print_char},
-		{"s", print_string},
-		{"i", print_int},
-		{"d", print_dec},
-		{"r", print_rev},
-		{"b", print_bin},
-		{"u", print_unsig},
-		{"o", print_octal},
-		{"x", print_x},
-		{"X", print_X},
-		{"R", print_rot13},
-		{NULL, NULL}
-	};
-
-	while (find_f[i].sc)
-	{
-		if (find_f[i].sc[0] == (*format))
-			return (find_f[i].f);
-		i++;
-	}
-	return (NULL);
-}
-/**
-  * _printf - function that produces output according to a format.
-  * @format: format (char, string, int, decimal)
-  * Return: size the output text;
-  */
+*_printf -prints according to format.
+*@format: a character string.
+*
+*Return: the number of character
+*/
 int _printf(const char *format, ...)
 {
-	va_list ap;
-	int (*f)(va_list);
-	unsigned int i = 0, cprint = 0;
+	int i, j, length, d_var, dvar_temp, dvar_length;
+	int *dvar_digits;
+	char *format_str;
+	va_list arg;
 
+	va_start(arg, format);
 	if (format == NULL)
 		return (-1);
-	va_start(ap, format);
-	while (format[i])
+	length = 0;
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		while (format[i] != '%' && format[i])
+		if (format[i] == '%')
+		{
+			switch (format[i + 1])
+			{
+			case 'c':
+				_putchar(va_arg(arg, int));
+				i++;
+				length++;
+				break;
+			case 'd':
+				d_var = va_arg(arg, int);
+				if (d_var < 0)
+				{
+					_putchar('-');
+					length++;
+					d_var = -d_var;
+				}
+				dvar_temp = d_var;
+				while (dvar_temp)
+				{
+					dvar_length++;
+					dvar_temp /= 10;
+				}
+				dvar_digits = malloc(dvar_length);
+				j = 0;
+				while (d_var)
+				{
+					dvar_digits[j] = d_var % 10;
+					j++;
+					d_var /= 10;
+				}
+				for (j = dvar_length - 1; j >= 0; j--)
+				{
+					_putchar(dvar_digits[j] + '0');
+					length++;
+				}
+				free(dvar_digits);
+				i++;
+				break;
+			case 'i':
+				d_var = va_arg(arg, int);
+				if (d_var < 0)
+				{
+					_putchar('-');
+					length++;
+					d_var = -d_var;
+				}
+				dvar_temp = d_var;
+				while (dvar_temp)
+				{
+					dvar_length++;
+					dvar_temp /= 10;
+				}
+				dvar_digits = malloc(dvar_length);
+				j = 0;
+				while (d_var)
+				{
+					dvar_digits[j] = d_var % 10;
+					j++;
+					d_var /= 10;
+				}
+				for (j = dvar_length - 1; j >= 0; j--)
+				{
+					_putchar(dvar_digits[j] + '0');
+					length++;
+				}
+				free(dvar_digits);
+				i++;
+				break;
+			case 's':
+				format_str = va_arg(arg, char*);
+
+				for (j = 0; format_str[j]; j++)
+				{
+					_putchar(format_str[j]);
+					length++;
+				}
+				i++;
+				break;
+			case '%':
+				_putchar('%');
+				length++;
+				i++;
+				break;
+			default:
+				_putchar(format[i]);
+				length = length + 1;
+			}
+		}
+		else
 		{
 			_putchar(format[i]);
-			cprint++;
-			i++;
+			length++;
 		}
-		if (format[i] == '\0')
-			return (cprint);
-		f = find_function(&format[i + 1]);
-		if (f != NULL)
-		{
-			cprint += f(ap);
-			i += 2;
-			continue;
-		}
-		if (!format[i + 1])
-			return (-1);
-		_putchar(format[i]);
-		cprint++;
-		if (format[i + 1] == '%')
-			i += 2;
-		else
-			i++;
 	}
-	va_end(ap);
-	return (cprint);
+	va_end(arg);
+	return (length);
 }
